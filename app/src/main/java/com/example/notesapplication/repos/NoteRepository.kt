@@ -8,19 +8,18 @@ import com.example.notesapplication.database.NoteDao
 import com.example.notesapplication.models.Note
 
 class NoteRepository(var noteDao : NoteDao) {
-    suspend fun insertNote(note : Note){
-        noteDao.insertNote(note)
-    }
+    suspend fun insertNote(note : Note) = noteDao.insertNote(note)
 
-    suspend fun updateNote(note : Note){
-        noteDao.updateNote(note)
-    }
 
-    suspend fun deleteNote(note : Note){
-        noteDao.deleteNote(note)
-    }
+    suspend fun updateNote(note : Note) = noteDao.updateNote(note)
 
-    fun getNotes() : LiveData<List<Note>>{
-        return noteDao.getNotes()
-    }
+
+    suspend fun deleteNote(note : Note) = noteDao.deleteNote(note)
+
+
+    fun getNotes() : LiveData<List<Note>> = noteDao.getNotes()
+
+
+    fun searchNote(query : String?):LiveData<List<Note>> = noteDao.searchNote(query)
+
 }

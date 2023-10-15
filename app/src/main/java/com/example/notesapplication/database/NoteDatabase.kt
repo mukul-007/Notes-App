@@ -20,8 +20,8 @@ abstract class NoteDatabase : RoomDatabase(){
                      INSTANCE =
                          Room.databaseBuilder(context, NoteDatabase::class.java, "notes_db").build()
                  }
-                 return INSTANCE!!
              }
+             return INSTANCE!!
         }
     }
 }
