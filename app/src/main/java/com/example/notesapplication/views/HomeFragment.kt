@@ -28,7 +28,7 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         initViews()
-        setHasOptionsMenu(true)
+//        setHasOptionsMenu(true)
         return binding.root
     }
 

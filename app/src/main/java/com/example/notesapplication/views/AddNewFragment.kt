@@ -46,7 +46,7 @@ class AddNewFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.home_menu, menu)
+        inflater.inflate(R.menu.save_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
