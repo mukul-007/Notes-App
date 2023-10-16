@@ -23,6 +23,8 @@
         android:label="fragment_add_new"
         tools:layout="@layout/fragment_add_new" >
         <action
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"
             android:id="@+id/action_addNewFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
@@ -32,6 +34,8 @@
         android:label="fragment_update_note"
         tools:layout="@layout/fragment_update_note" >
         <action
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"
             android:id="@+id/action_updateNoteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <argument

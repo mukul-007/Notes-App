@@ -13,36 +13,48 @@ class MainViewModel(var repository: NoteRepository) : ViewModel(){
 
     private var notes : MutableLiveData<List<Note>> = MutableLiveData()
 
+    val notesLiveData : LiveData<List<Note>> = notes
     init {
-        notes.postValue(repository.getNotes().value)
+        fetchNotes()
     }
-    val notesLiveData : LiveData<List<Note>>
-        get() = notes
     fun addNote(note : Note){
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertNote(note)
+            fetchNotes()
         }
     }
 
     fun updateNote(note : Note){
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateNote(note)
+            fetchNotes()
         }
     }
 
     fun deleteNote(note : Note){
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteNote(note)
+            fetchNotes()
         }
     }
 
-    fun getNotes(query : String) : LiveData<List<Note>>{
-        notes.postValue(repository.getNotes().value)
-        return notesLiveData
+    private fun fetchNotes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.getNotes()
+            notes.postValue(result)
+        }
     }
 
-    fun searchNotes(query : String) : LiveData<List<Note>>{
-        return repository.searchNote(query)
+//    fun getNotes() /*: LiveData<List<Note>>*/{
+//        notes.postValue(repository.getNotes().value)
+////        return notesLiveData
+//    }
+
+    fun searchNotes(query : String) /*: LiveData<List<Note>>*/{
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.searchNote(query)
+            notes.postValue(result)
+        }
     }
 
 }

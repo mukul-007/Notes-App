@@ -19,7 +19,7 @@ import java.util.Random
 class NotesAdapter : ListAdapter<Note, NotesAdapter.NoteViewHolder>(DiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val binding = NoteItemLayoutBinding.inflate(LayoutInflater.from(parent.context), null, false)
+        val binding = NoteItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NoteViewHolder(binding)
     }
 

@@ -37,18 +37,17 @@ class UpdateNoteFragment : Fragment() {
         binding.titleUpdateET.setText(currentNote?.title)
         binding.contentUpdateET.setText(currentNote?.content)
         binding.updateBTN.setOnClickListener {
-            currentNote.let {
-                val title = binding.titleUpdateET.text.toString()
-                val content = binding.contentUpdateET.text.toString()
-                if(title.isNotEmpty()){
-                    val note = Note(currentNote!!.id, title, content)
-                    notesViewModel.addNote(note)
-                    Toast.makeText(context, "Note updated successfully!", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_addNewFragment_to_homeFragment)
-                }else{
-                    Toast.makeText(context, "Please Enter title", Toast.LENGTH_SHORT).show()
-                }
+            val title = binding.titleUpdateET.text.toString()
+            val content = binding.contentUpdateET.text.toString()
+            if (title.isNotEmpty()) {
+                val note = Note(currentNote!!.id, title, content)
+                notesViewModel.updateNote(note)
+                Toast.makeText(context, "Note updated successfully!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(UpdateNoteFragmentDirections.actionUpdateNoteFragmentToHomeFragment())
+            } else {
+                Toast.makeText(context, "Please Enter title", Toast.LENGTH_SHORT).show()
             }
+
         }
     }
 
@@ -71,6 +70,7 @@ class UpdateNoteFragment : Fragment() {
         currentNote?.let {
             notesViewModel.deleteNote(it)
             Toast.makeText(context, "Note Deleted Successfully", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(UpdateNoteFragmentDirections.actionUpdateNoteFragmentToHomeFragment())
         }
     }
 }

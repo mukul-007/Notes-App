@@ -17,9 +17,9 @@ class NoteRepository(var noteDao : NoteDao) {
     suspend fun deleteNote(note : Note) = noteDao.deleteNote(note)
 
 
-    fun getNotes() : LiveData<List<Note>> = noteDao.getNotes()
+    suspend fun getNotes() : List<Note> = noteDao.getNotes()
 
 
-    fun searchNote(query : String?):LiveData<List<Note>> = noteDao.searchNote(query)
+    suspend fun searchNote(query : String?): List<Note> = noteDao.searchNote(query)
 
 }

@@ -1,17 +1,16 @@
 package com.example.notesapplication.views
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notesapplication.R
 import com.example.notesapplication.databinding.FragmentHomeBinding
@@ -21,14 +20,14 @@ import com.example.notesapplication.viewModel.MainViewModel
 class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
 
     lateinit var binding : FragmentHomeBinding
-    lateinit var adapter: NotesAdapter
+    lateinit var notesAdapter: NotesAdapter
     lateinit var notes : List<Note>
     lateinit var notesViewModel : MainViewModel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         initViews()
-//        setHasOptionsMenu(true)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -43,34 +42,38 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun setUpRecyclerView(){
-        notes = listOf()
-        adapter = NotesAdapter()
-        adapter.submitList(notes)
+//        notes = listOf()
+        notesAdapter = NotesAdapter()
+//        adapter.submitList(notes)
         binding.notesRV.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            adapter = adapter
-            setHasFixedSize(true)
+            setHasFixedSize(false)
+            this.adapter = notesAdapter
         }
-        notesViewModel.getNotes("").observe(
+        notesViewModel.notesLiveData.observe(
             viewLifecycleOwner, Observer {
-                notes = it
-                adapter.submitList(notes)
+                it?.let {
+//                    notes = it
+//                    adapter.notifyDataSetChanged()
+                    notesAdapter.submitList(it)
+                }
             }
         )
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-
         menu.clear()
         inflater.inflate(R.menu.home_menu, menu)
-        val menuSearch = menu.getItem(R.id.menuSearch).actionView as SearchView
+        val menuSearch = menu.findItem(R.id.menuSearch).actionView as SearchView
         menuSearch.isSubmitButtonEnabled = false
         menuSearch.setOnQueryTextListener(this)
+
+        super.onCreateOptionsMenu(menu, inflater)
+
     }
 
     private fun goToAddNewNote(view: View){
-        view.findNavController().navigate(R.id.action_homeFragment_to_addNewFragment)
+        view.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddNewFragment())
     }
 
     override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -85,10 +88,11 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun searchNotes(query : String){
-        val searchQuery = "%$query"
-        notesViewModel.searchNotes(searchQuery).observe(viewLifecycleOwner, Observer {
-            notes = it
-            adapter.submitList(notes)
-        })
+        val searchQuery = "%$query%"
+        notesViewModel.searchNotes(searchQuery)
+//        notesViewModel.searchNotes(searchQuery).observe(viewLifecycleOwner, Observer {
+//            notes = it
+//            adapter.submitList(notes)
+//        })
     }
 }
